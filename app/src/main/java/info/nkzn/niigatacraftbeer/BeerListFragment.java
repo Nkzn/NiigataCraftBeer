@@ -7,27 +7,36 @@ import android.widget.Toast;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import info.nkzn.niigatacraftbeer.core.Brewery;
 
 @EFragment
-public class BreweryListFragment extends ListFragment {
+public class BeerListFragment extends ListFragment {
+
+    @FragmentArg
+    ArrayList<String> beers;
 
     @ViewById
     ListView list;
 
-    @Bean
-    BreweryListAdapter adapter;
+    BeerListAdapter adapter;
 
     @AfterViews
     void bindAdapter() {
+        if (adapter == null) {
+            adapter = new BeerListAdapter(getActivity(), beers);
+        }
         setListAdapter(adapter);
     }
 
     @ItemClick
-    void listItemClicked(Brewery brewery) {
-        BreweryActivity_.intent(this).brewery(brewery).start();
+    void listItemClicked(String beer) {
+        Toast.makeText(getActivity(), beer, Toast.LENGTH_LONG).show();
     }
 }
