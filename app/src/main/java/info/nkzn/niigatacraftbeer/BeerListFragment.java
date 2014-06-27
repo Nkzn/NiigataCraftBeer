@@ -1,6 +1,14 @@
 package info.nkzn.niigatacraftbeer;
 
 import android.app.ListFragment;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,18 +33,26 @@ public class BeerListFragment extends ListFragment {
     @ViewById
     ListView list;
 
-    BeerListAdapter adapter;
+    ArrayAdapter<String> adapter;
 
     @AfterViews
     void bindAdapter() {
         if (adapter == null) {
-            adapter = new BeerListAdapter(getActivity(), beers);
+            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_multiple_choice, beers);
         }
         setListAdapter(adapter);
-    }
 
-    @ItemClick
-    void listItemClicked(String beer) {
-        Toast.makeText(getActivity(), beer, Toast.LENGTH_LONG).show();
+        list.setItemsCanFocus(false);
+        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final SparseBooleanArray checkList = list.getCheckedItemPositions();
+
+                // TODO Twitter/Facebookへの写真投稿を促す
+
+                // TODO チェック状態を保存する
+            }
+        });
     }
 }
