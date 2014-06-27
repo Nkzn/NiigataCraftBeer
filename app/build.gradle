@@ -1,0 +1,47 @@
+apply plugin: 'android'
+apply plugin: 'android-apt'
+apply plugin: 'robolectric'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "info.nkzn.niigatacraftbeer"
+        minSdkVersion 15
+        targetSdkVersion 18
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        androidTest.setRoot('src/test')
+    }
+}
+
+dependencies {
+    androidTestCompile "junit:junit:${junitVersion}"
+    androidTestCompile "org.robolectric:robolectric:${robolectricVersion}"
+
+    compile "org.androidannotations:androidannotations-api:${project.androidAnnotationsVersion}"
+    apt "org.androidannotations:androidannotations:${project.androidAnnotationsVersion}"
+
+    compile "net.vvakame:jsonpullparser-core:${project.jppVersion}"
+    apt "net.vvakame:jsonpullparser-apt:${project.jppVersion}"
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+robolectric {
+    // configure the set of classes for JUnit tests
+    include '**/*Test.class'
+    exclude '**/espresso/**/*.class'
+
+    // configure max heap size of the test JVM
+    maxHeapSize = "2048m"
+}
