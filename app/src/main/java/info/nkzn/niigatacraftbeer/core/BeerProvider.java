@@ -12,19 +12,10 @@ import info.nkzn.niigatacraftbeer.R;
 
 public class BeerProvider {
 
-    private static BeerProvider instance;
-
     private BeerProvider() {
     }
 
-    public static BeerProvider getInstance() {
-        if (instance == null) {
-            instance = new BeerProvider();
-        }
-        return instance;
-    }
-
-    public List<Brewery> getBreweries(Context context) {
+    public static List<Brewery> getBreweries(Context context) {
         try {
             return BreweryGen.getList(readJsonAsset(context));
         } catch (IOException e) {
@@ -34,7 +25,7 @@ public class BeerProvider {
         }
     }
 
-    InputStream readJsonAsset(Context context) throws IOException {
+    static InputStream readJsonAsset(Context context) throws IOException {
         return context.getResources().openRawResource(R.raw.niigata_craft_beer_2014_json);
     }
 }

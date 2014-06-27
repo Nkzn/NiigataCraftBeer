@@ -19,7 +19,7 @@ public class Brewery {
     }
 
     /* テスト用 */
-    Brewery(String name, String... beers) {
+    public Brewery(String name, String... beers) {
         this.name = name;
         this.beers = Arrays.asList(beers);
     }

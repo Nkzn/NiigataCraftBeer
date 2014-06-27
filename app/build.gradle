@@ -37,6 +37,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
+// for Android Annotations
+android.applicationVariants.all { variant ->
+    variant.javaCompile.options.compilerArgs += [
+            '-AandroidManifestFile=' + variant.processResources.manifestFile
+    ]
+}
+
 robolectric {
     // configure the set of classes for JUnit tests
     include '**/*Test.class'
