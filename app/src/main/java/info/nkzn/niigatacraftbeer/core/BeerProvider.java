@@ -2,10 +2,11 @@ package info.nkzn.niigatacraftbeer.core;
 
 import android.content.Context;
 
-import java.io.BufferedReader;
+import net.vvakame.util.jsonpullparser.JsonFormatException;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.List;
 
 import info.nkzn.niigatacraftbeer.R;
 
@@ -13,7 +14,8 @@ public class BeerProvider {
 
     private static BeerProvider instance;
 
-    private BeerProvider() {}
+    private BeerProvider() {
+    }
 
     public static BeerProvider getInstance() {
         if (instance == null) {
@@ -22,17 +24,17 @@ public class BeerProvider {
         return instance;
     }
 
-    String readJsonAsset(Context context) throws IOException {
-        InputStream inputStream = context.getResources().openRawResource(R.raw.niigata_craft_beer_2014_json);
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-        StringBuilder sb = new StringBuilder();
-        String str;
-        while ((str = br.readLine()) != null) {
-            sb.append(str);
+    public List<Brewery> getBreweries(Context context) {
+        try {
+            return BreweryGen.getList(readJsonAsset(context));
+        } catch (IOException e) {
+            throw new IllegalStateException("JSONのデータ上手く取れてないよ");
+        } catch (JsonFormatException e) {
+            throw new IllegalArgumentException("JSONの中身おかしかったみたいよ");
         }
+    }
 
-        return sb.toString();
+    InputStream readJsonAsset(Context context) throws IOException {
+        return context.getResources().openRawResource(R.raw.niigata_craft_beer_2014_json);
     }
 }
