@@ -33,7 +33,7 @@ public class BeerListFragment extends ListFragment {
 
     private static final String TAG = BeerListFragment.class.getSimpleName();
 
-    private static final int CAMERA_REQUEST_CODE = BeerListFragment.class.hashCode();
+    private static final int CAMERA_REQUEST_CODE = BeerListFragment.class.hashCode() & 0xffff;
 
     @FragmentArg
     @InstanceState

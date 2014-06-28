@@ -13,7 +13,7 @@ import info.nkzn.niigatacraftbeer.core.Brewery;
 @EFragment
 public class BreweryListFragment extends ListFragment {
 
-    private static final int REQUEST_CODE_BREWERY = "brewery".hashCode();
+    private static final int REQUEST_CODE_BREWERY = "brewery".hashCode() & 0xffff;;
 
     @Bean
     BreweryListAdapter adapter;
