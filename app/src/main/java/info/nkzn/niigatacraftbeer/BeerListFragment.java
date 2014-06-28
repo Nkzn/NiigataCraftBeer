@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import info.nkzn.niigatacraftbeer.core.Beer;
 import info.nkzn.niigatacraftbeer.core.Brewery;
 
 @EFragment
@@ -40,11 +41,15 @@ public class BeerListFragment extends ListFragment {
     @FragmentArg
     Brewery brewery;
 
+    @InstanceState
+    ArrayList<Beer> beers;
+
     BeerListAdapter adapter;
 
     @AfterViews
     void bindAdapter() {
-        adapter = new BeerListAdapter(getActivity(), brewery.getBeers());
+        beers = new ArrayList<>(brewery.getBeers());
+        adapter = new BeerListAdapter(getActivity(), beers);
 
         setListAdapter(adapter);
     }
