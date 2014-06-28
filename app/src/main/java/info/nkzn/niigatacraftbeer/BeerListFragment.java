@@ -1,6 +1,7 @@
 package info.nkzn.niigatacraftbeer;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentValues;
@@ -174,6 +175,11 @@ public class BeerListFragment extends ListFragment {
         shareIntent.setType("image/*");
         shareIntent.putExtra(Intent.EXTRA_STREAM, beer.getPhotoUri());
         shareIntent.setPackage("com.instagram.android");
-        startActivity(shareIntent);
+
+        try {
+            startActivity(shareIntent);
+        } catch (ActivityNotFoundException e) {
+            // instagramが無いなら無いで握りつぶす
+        }
     }
 }
