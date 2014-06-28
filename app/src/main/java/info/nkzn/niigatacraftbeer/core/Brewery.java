@@ -85,12 +85,13 @@ public class Brewery implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
-        dest.writeTypedList(beers);
+        dest.writeList(this.beers);
     }
 
     private Brewery(Parcel in) {
         this.name = in.readString();
-        in.readTypedList(beers, Beer.CREATOR);
+        this.beers = new ArrayList<>();
+        in.readList(this.beers, Beer.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Brewery> CREATOR = new Parcelable.Creator<Brewery>() {
