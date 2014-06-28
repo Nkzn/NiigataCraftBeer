@@ -3,6 +3,7 @@ package info.nkzn.niigatacraftbeer;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,7 +17,7 @@ import info.nkzn.niigatacraftbeer.R;
 import info.nkzn.niigatacraftbeer.core.Brewery;
 
 @EActivity(R.layout.activity_brewery)
-public class BreweryActivity extends Activity {
+public class BreweryActivity extends FragmentActivity {
 
     @Extra
     Brewery brewery;
@@ -26,7 +27,7 @@ public class BreweryActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fl_container, BeerListFragment_.builder().brewery(brewery).build())
                     .commit();
         }

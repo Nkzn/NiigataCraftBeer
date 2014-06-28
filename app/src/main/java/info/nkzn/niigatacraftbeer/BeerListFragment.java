@@ -1,47 +1,28 @@
 package info.nkzn.niigatacraftbeer;
 
 import android.app.Activity;
-import android.app.ListFragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import net.vvakame.util.jsonpullparser.JsonFormatException;
-import net.vvakame.util.jsonpullparser.util.JsonArray;
-import net.vvakame.util.jsonpullparser.util.JsonHash;
-
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemLongClick;
-import org.androidannotations.annotations.ViewById;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import info.nkzn.niigatacraftbeer.core.Beer;
 import info.nkzn.niigatacraftbeer.core.BeerProvider;

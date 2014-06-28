@@ -1,7 +1,7 @@
 package info.nkzn.niigatacraftbeer;
 
-import android.app.ListFragment;
 import android.content.Intent;
+import android.support.v4.app.ListFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

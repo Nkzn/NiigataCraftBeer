@@ -1,19 +1,17 @@
 package info.nkzn.niigatacraftbeer;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     private static final String PREF_KEY_INSTAGRAM_CHECK = MainActivity.class.getCanonicalName() + ".instagram_check";
 
@@ -22,7 +20,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fl_container, BreweryListFragment_.builder().build())
                     .commit();
 

@@ -1,9 +1,9 @@
 package info.nkzn.niigatacraftbeer;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,7 +24,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * <code>PhotoViewActivity_.intent(this).imageUrl("画像のURL").start()</code>
  */
 @EActivity(R.layout.activity_photo_view)
-public class PhotoViewActivity extends Activity {
+public class PhotoViewActivity extends FragmentActivity {
 
     private static final String TAG = PhotoViewActivity.class.getSimpleName();
 
