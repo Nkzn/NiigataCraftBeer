@@ -37,58 +37,25 @@ public class BreweryItemView extends FrameLayout {
     public void bind(Brewery brewery) {
         text1.setText(brewery.getName());
 
-        String beersHighlightedWithHtml = highlite(brewery);
+        String beersHighlightedWithHtml = highlight(brewery);
+        Log.d("bind", beersHighlightedWithHtml);
 
         text2.setText(Html.fromHtml(beersHighlightedWithHtml));
     }
 
-    private String highlite(Brewery brewery) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String json = pref.getString(brewery.getName(), "");
-
+    private String highlight(Brewery brewery) {
         List<Beer> beers = brewery.getBeers();
 
-        if (TextUtils.isEmpty(json)) {
-            return TextUtils.join(", ", beers2Strings(beers));
-        }
-
         List<String> highlightedBeers = new ArrayList<>();
-        try {
-            JsonArray jsonArray = JsonArray.fromString(json);
-
-            if (beers.size() != jsonArray.size()) {
-                return TextUtils.join(", ", beers2Strings(beers));
+        for (Beer beer : beers) {
+            Log.d("highlight", "beer -> " + beer.toString());
+            if (beer.getLastDrunk() != null) {
+                highlightedBeers.add("<font color=\"#FF0000\">" + beer.getName() + "</font>");
+            } else {
+                highlightedBeers.add(beer.getName());
             }
-
-            for (int i=0; i < beers.size(); i++) {
-                final Beer beer = beers.get(i);
-
-                JsonHash jsonHash = jsonArray.getJsonHashOrNull(i);
-                if (jsonHash == null) {
-                    highlightedBeers.add(beer.getName());
-                    continue;
-                }
-
-                Boolean state = jsonHash.getBooleanOrNull("state");
-
-                if (state != null && state) {
-                    highlightedBeers.add("<font color=\"#FF0000\">" + beer.getName() + "</font>");
-                } else {
-                    highlightedBeers.add(beer.getName());
-                }
-            }
-        } catch (Exception e) {
-            return TextUtils.join(", ", beers2Strings(beers));
         }
 
         return TextUtils.join(", ", highlightedBeers);
-    }
-
-    List<String> beers2Strings(List<Beer> beers) {
-        List<String> beerNames = new ArrayList<>();
-        for (Beer beer: beers) {
-            beerNames.add(beer.getName());
-        }
-        return beerNames;
     }
 }

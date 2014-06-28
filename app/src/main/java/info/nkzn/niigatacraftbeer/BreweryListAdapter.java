@@ -9,6 +9,7 @@ import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.nkzn.niigatacraftbeer.core.BeerProvider;
@@ -17,14 +18,15 @@ import info.nkzn.niigatacraftbeer.core.Brewery;
 @EBean
 public class BreweryListAdapter extends BaseAdapter {
 
-    List<Brewery> breweries;
+    final List<Brewery> breweries = new ArrayList<>();
 
     @RootContext
     Context context;
 
     @AfterInject
-    void afterInject() {
-        breweries = BeerProvider.getBreweries(context);
+    public void loadCurrentBreweries() {
+        breweries.clear();
+        breweries.addAll(BeerProvider.getBreweries(context));
     }
 
     @Override

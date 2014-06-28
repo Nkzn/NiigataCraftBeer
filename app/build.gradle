@@ -38,6 +38,8 @@ dependencies {
 
     compile "com.squareup.picasso:picasso:${picassoVersion}"
 
+    compile "com.github.chrisbanes.photoview:library:${photoViewVersion}"
+
     compile "org.twitter4j:twitter4j-core:${twitter4jVersion}"
 
     compile "org.androidannotations:androidannotations-api:${project.androidAnnotationsVersion}"

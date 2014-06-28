@@ -8,5 +8,7 @@
     <string name="beer_image">beer image.</string>
     <string name="didnot_drink_yet">まだ飲んでないですね</string>
     <string name="date_format">yyyy/MM/dd HH:mm に飲みました</string>
+    <string name="title_activity_photo_view">PhotoViewActivity</string>
+    <string name="photo">写真</string>
 
 </resources>

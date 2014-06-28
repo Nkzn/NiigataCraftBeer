@@ -27,6 +27,7 @@ project.ext {
     robolectricVersion = "2.3+"
     twitter4jVersion = '4.0.2+'
     picassoVersion = '2.3.+'
+    photoViewVersion = '1.2.+'
 }
 
 task wrapper(type: Wrapper) {
