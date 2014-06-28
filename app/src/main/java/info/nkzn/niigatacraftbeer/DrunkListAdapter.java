@@ -50,7 +50,7 @@ public class DrunkListAdapter extends BaseAdapter {
             view = (DrunkListItemView) convertView;
         }
 
-        view.bind((DrunkListItem) getItem(position));
+        view.bind((DrunkListItem) getItem(position), position);
 
         return view;
     }

@@ -91,6 +91,8 @@ public class MainActivity extends FragmentActivity {
             switch (position) {
                 case 0:
                     return "ブルワリー一覧";
+                case 1:
+                    return "これまで飲んだビール一覧";
                 default:
                     return "";
             }

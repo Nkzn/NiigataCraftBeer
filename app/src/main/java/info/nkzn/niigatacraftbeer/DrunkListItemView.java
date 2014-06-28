@@ -2,10 +2,7 @@ package info.nkzn.niigatacraftbeer;
 
 import android.content.Context;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -13,9 +10,7 @@ import org.androidannotations.annotations.ViewById;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import info.nkzn.niigatacraftbeer.core.Beer;
-
-@EViewGroup(R.layout.beer_list_item)
+@EViewGroup(R.layout.drunk_list_item)
 public class DrunkListItemView extends FrameLayout {
 
     @ViewById
@@ -25,19 +20,16 @@ public class DrunkListItemView extends FrameLayout {
     TextView text2;
 
     @ViewById
-    ImageView ivBeer;
+    TextView tvNumber;
 
     public DrunkListItemView(Context context) {
         super(context);
     }
 
-    public void bind(DrunkListItem drunkListItem) {
+    public void bind(DrunkListItem drunkListItem, int position) {
         text1.setText(drunkListItem.getBreweryName() + "/" + drunkListItem.getBeerName());
         text2.setText(formatDate(drunkListItem.getLastDrunk()));
-
-        Picasso.with(getContext())
-                .load(drunkListItem.getImageUri())
-                .into(ivBeer);
+        tvNumber.setText("" + (position + 1));
     }
 
     String formatDate(Date date) {

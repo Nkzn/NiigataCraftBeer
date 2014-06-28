@@ -1,29 +1,21 @@
 package info.nkzn.niigatacraftbeer;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.text.Html;
-import android.text.TextUtils;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import net.vvakame.util.jsonpullparser.util.JsonArray;
-import net.vvakame.util.jsonpullparser.util.JsonHash;
-
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import info.nkzn.niigatacraftbeer.core.Beer;
-import info.nkzn.niigatacraftbeer.core.Brewery;
 
 @EViewGroup(R.layout.beer_list_item)
 public class BeerItemView extends FrameLayout {
@@ -53,6 +45,7 @@ public class BeerItemView extends FrameLayout {
 
         Picasso.with(getContext())
                 .load(beer.getPhotoUri())
+                .config(Bitmap.Config.ARGB_4444)
                 .placeholder(android.R.drawable.ic_menu_camera)
                 .error(android.R.drawable.ic_menu_camera)
                 .into(ivBeer);

@@ -1,11 +1,11 @@
 package info.nkzn.niigatacraftbeer;
 
 import android.support.v4.app.ListFragment;
-import android.widget.GridView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ItemClick;
 
 @EFragment
 public class DrunkListFragment extends ListFragment {
@@ -26,5 +26,10 @@ public class DrunkListFragment extends ListFragment {
     @AfterViews
     void bindAdapter() {
         setListAdapter(adapter);
+    }
+
+    @ItemClick
+    void listItemClicked(DrunkListItem item) {
+        PhotoViewActivity_.intent(this).imageUrl(item.getImageUri()).start();
     }
 }
