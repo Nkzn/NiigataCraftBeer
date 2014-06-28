@@ -23,6 +23,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 
@@ -39,9 +40,12 @@ public class BeerListFragment extends ListFragment {
     @FragmentArg
     Brewery brewery;
 
-    @ViewById
-    ListView list;
+    BeerListAdapter adapter;
 
-    ArrayAdapter<String> adapter;
+    @AfterViews
+    void bindAdapter() {
+        adapter = new BeerListAdapter(getActivity(), brewery.getBeers());
 
+        setListAdapter(adapter);
+    }
 }
