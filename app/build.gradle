@@ -13,12 +13,20 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    compileOptions {
+        encoding = "UTF-8"
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     sourceSets {
         androidTest.setRoot('src/test')
     }
@@ -27,6 +35,10 @@ android {
 dependencies {
     androidTestCompile "junit:junit:${junitVersion}"
     androidTestCompile "org.robolectric:robolectric:${robolectricVersion}"
+
+    compile "com.squareup.picasso:picasso:${picassoVersion}"
+
+    compile "com.github.chrisbanes.photoview:library:${photoViewVersion}"
 
     compile "org.twitter4j:twitter4j-core:${twitter4jVersion}"
 

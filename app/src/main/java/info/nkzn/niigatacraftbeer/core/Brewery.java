@@ -7,7 +7,6 @@ import net.vvakame.util.jsonpullparser.annotation.JsonKey;
 import net.vvakame.util.jsonpullparser.annotation.JsonModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @JsonModel
@@ -17,15 +16,21 @@ public class Brewery implements Parcelable {
     String name;
 
     @JsonKey
-    List<String> beers;
+    List<Beer> beers;
 
     public Brewery() {
     }
 
     /* テスト用 */
-    public Brewery(String name, String... beers) {
-        this.name = name;
-        this.beers = Arrays.asList(beers);
+    public Brewery(String breweryName, String... beerNames) {
+        this.name = breweryName;
+
+        beers = new ArrayList<>();
+        if (beerNames != null) {
+            for (String beerName : beerNames) {
+                beers.add(new Beer(beerName));
+            }
+        }
     }
 
     public String getName() {
@@ -36,11 +41,11 @@ public class Brewery implements Parcelable {
         this.name = name;
     }
 
-    public List<String> getBeers() {
+    public List<Beer> getBeers() {
         return beers;
     }
 
-    public void setBeers(List<String> beers) {
+    public void setBeers(List<Beer> beers) {
         this.beers = beers;
     }
 
@@ -85,8 +90,8 @@ public class Brewery implements Parcelable {
 
     private Brewery(Parcel in) {
         this.name = in.readString();
-        this.beers = new ArrayList<String>();
-        in.readList(this.beers, List.class.getClassLoader());
+        this.beers = new ArrayList<>();
+        in.readList(this.beers, Beer.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Brewery> CREATOR = new Parcelable.Creator<Brewery>() {

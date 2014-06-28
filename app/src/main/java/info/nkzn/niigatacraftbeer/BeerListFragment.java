@@ -1,9 +1,15 @@
 package info.nkzn.niigatacraftbeer;
 
+import android.app.Activity;
 import android.app.ListFragment;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -23,94 +29,150 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ItemLongClick;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import info.nkzn.niigatacraftbeer.core.Beer;
+import info.nkzn.niigatacraftbeer.core.BeerProvider;
 import info.nkzn.niigatacraftbeer.core.Brewery;
 
 @EFragment
 public class BeerListFragment extends ListFragment {
 
+    private static final String TAG = BeerListFragment.class.getSimpleName();
+
+    private static final int CAMERA_REQUEST_CODE = BeerListFragment.class.hashCode();
+
     @FragmentArg
+    @InstanceState
     Brewery brewery;
 
-    @ViewById
-    ListView list;
+    @InstanceState
+    Uri imageUri;
 
-    ArrayAdapter<String> adapter;
+    @InstanceState
+    Beer beerToTakePhoto;
+
+    @InstanceState
+    Date lastDrankToTakePhoto;
+
+    @InstanceState
+    ArrayList<Beer> beers;
+
+    BeerListAdapter adapter;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            resultCamera(resultCode);
+        }
+    }
 
     @AfterViews
-    void initListView() {
-        if (adapter == null) {
-            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_multiple_choice, brewery.getBeers());
-        }
+    void bindAdapter() {
+        beers = new ArrayList<>(brewery.getBeers());
+        adapter = new BeerListAdapter(getActivity(), beers);
+
         setListAdapter(adapter);
-
-        list.setItemsCanFocus(false);
-        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final SparseBooleanArray checkList = list.getCheckedItemPositions();
-
-                // チェック状態を保存する
-                saveCurrentCheckState(checkList, position);
-
-                // TODO Twitter/Facebookへの写真投稿を促す
-
-            }
-        });
-
-        restoreCheckState();
     }
 
-    void saveCurrentCheckState(SparseBooleanArray checkList, int position) {
-        List<String> beers = brewery.getBeers();
-        JsonArray jsonArray = new JsonArray();
-
-        for(int i=0; i < beers.size(); i++) {
-            final boolean checked = checkList.get(i, false);
-
-            JsonHash jsonHash = new JsonHash();
-            if (i == position && checked) {
-                jsonHash.put("last_checked", new Date().getTime());
-            }
-
-            jsonHash.put("state", checked);
-
-            jsonArray.add(jsonHash);
+    @ItemClick
+    void listItemClicked(Beer beer) {
+        if (beer.getLastDrunk() == null || beer.getPhotoUri() == null) {
+            takeWithCamera(beer);
+        } else {
+            PhotoViewActivity_.intent(this).imageUrl(beer.getPhotoUri()).start();
         }
-
-        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-        edit.putString(brewery.getName(), jsonArray.toString());
-        edit.commit();
     }
 
-    void restoreCheckState() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String json = pref.getString(brewery.getName(), "");
+    @ItemLongClick
+    void listItemLongClicked(Beer beer) {
+        takeWithCamera(beer);
+    }
 
-        if (!TextUtils.isEmpty(json)) {
-            try {
-                JsonArray jsonArray = JsonArray.fromString(json);
+    /**
+     * カメラで撮影
+     */
+    private void takeWithCamera(Beer beer) {
+        Log.d(TAG, "takeWithCamera");
 
-                for(int i=0; i < brewery.getBeers().size(); i++) {
-                    JsonHash jsonHash = jsonArray.getJsonHashOrNull(i);
-                    if (jsonHash != null) {
-                        Boolean checked = jsonHash.getBooleanOrNull("state");
-                        if (checked != null) {
-                            list.setItemChecked(i, checked);
-                        }
-                    }
-                }
-            } catch (IOException e) {
-            } catch (JsonFormatException e) {
+        final Activity activity = getActivity();
+        if (activity == null) {
+            Log.w(TAG, "activity is null.");
+            return;
+        }
+
+        beerToTakePhoto = beer;
+        lastDrankToTakePhoto = new Date();
+
+        // カメラで撮影した画像の保存場所を確保
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, getPicFileName(lastDrankToTakePhoto));
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg"); // getPicFileName()が.jpgなので
+        imageUri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, CAMERA_REQUEST_CODE);
+    }
+
+    /**
+     * カメラで撮影のonActivityResult
+     */
+    private void resultCamera(int resultCode) {
+        Log.d(TAG, "resultCamera: " + resultCode);
+
+        final Activity activity = getActivity();
+        if (activity == null) {
+            Log.w(TAG, "activity is null.");
+            return;
+        }
+
+        if (resultCode == Activity.RESULT_OK) {
+            beerToTakePhoto.setLastDrunk(lastDrankToTakePhoto);
+            beerToTakePhoto.setPhotoUri(imageUri);
+            int photoTakedBeerIndex = beerIndexOf(beerToTakePhoto);
+
+            beers.set(photoTakedBeerIndex, beerToTakePhoto);
+
+            brewery.setBeers(beers);
+            BeerProvider.save(getActivity(), brewery);
+
+            adapter.notifyDataSetChanged();
+        } else {
+            // resultがOKでなかったら確保した保存場所を削除
+            Log.d(TAG, "cancel: " + activity.getContentResolver().delete(imageUri, null, null));
+        }
+
+        imageUri = null;
+        beerToTakePhoto = null;
+        lastDrankToTakePhoto = null;
+    }
+
+    /**
+     * 日付から画像ファイル名を生成
+     */
+    private String getPicFileName(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss'.jpg'");
+        return sdf.format(date);
+    }
+
+    private int beerIndexOf(Beer beer) {
+        for (int i = 0; i < beers.size(); i++) {
+            if (TextUtils.equals(beer.getName(), beers.get(i).getName())) {
+                return i;
             }
         }
+        return -1;
     }
 }
