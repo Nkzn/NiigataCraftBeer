@@ -36,6 +36,8 @@ dependencies {
     androidTestCompile "junit:junit:${junitVersion}"
     androidTestCompile "org.robolectric:robolectric:${robolectricVersion}"
 
+    compile "com.squareup.picasso:picasso:${picassoVersion}"
+
     compile "org.twitter4j:twitter4j-core:${twitter4jVersion}"
 
     compile "org.androidannotations:androidannotations-api:${project.androidAnnotationsVersion}"
