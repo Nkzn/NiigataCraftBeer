@@ -2,7 +2,10 @@ package info.nkzn.niigatacraftbeer;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -179,10 +182,17 @@ public class BeerListFragment extends ListFragment {
     }
 
     void openShareDialog(Beer beer) {
-        ShareDialogFragment_.builder()
-                .brewery(brewery)
-                .beer(beer)
-                .build()
-                .show(getFragmentManager(), "share");
+        final String shareText = getString(R.string.drunk_now, brewery.getName(), beer.getName());
+
+        ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newPlainText("text_data", shareText));
+
+        Toast.makeText(getActivity(), getString(R.string.please_share_via_clipboard, shareText), Toast.LENGTH_LONG).show();
+
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, beer.getPhotoUri());
+        shareIntent.setPackage("com.instagram.android");
+        startActivity(shareIntent);
     }
 }

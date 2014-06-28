@@ -10,5 +10,7 @@
     <string name="date_format">yyyy/MM/dd HH:mm に飲みました</string>
     <string name="title_activity_photo_view">PhotoViewActivity</string>
     <string name="photo">写真</string>
+    <string name="drunk_now">%1$s の %2$s #nbeer2014</string>
+    <string name="please_share_via_clipboard">「%1$s」をクリップボードに保存しました</string>
 
 </resources>
