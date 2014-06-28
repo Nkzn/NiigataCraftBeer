@@ -149,6 +149,8 @@ public class BeerListFragment extends ListFragment {
             BeerProvider.save(getActivity(), brewery);
 
             adapter.notifyDataSetChanged();
+
+            openShareDialog(beerToTakePhoto);
         } else {
             // resultがOKでなかったら確保した保存場所を削除
             Log.d(TAG, "cancel: " + activity.getContentResolver().delete(imageUri, null, null));
@@ -174,5 +176,13 @@ public class BeerListFragment extends ListFragment {
             }
         }
         return -1;
+    }
+
+    void openShareDialog(Beer beer) {
+        ShareDialogFragment_.builder()
+                .brewery(brewery)
+                .beer(beer)
+                .build()
+                .show(getFragmentManager(), "share");
     }
 }
