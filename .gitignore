@@ -22,3 +22,7 @@ gen
 # for crashlytics
 com_crashlytics_export_strings.xml
 crashlytics-build.properties
+
+# build
+nkzn.keystore
+gradle.properties
