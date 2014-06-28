@@ -12,5 +12,6 @@
     <string name="photo">写真</string>
     <string name="drunk_now">%1$s の %2$s #nbeer2014</string>
     <string name="please_share_via_clipboard">「%1$s」をクリップボードに保存しました</string>
+    <string name="suggest_install_instagram">"写真シェア機能を使うには、Instagramをインストールしてログインしておいてください"</string>
 
 </resources>
