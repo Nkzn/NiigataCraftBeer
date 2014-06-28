@@ -38,7 +38,7 @@ public class BreweryItemView extends FrameLayout {
         text1.setText(brewery.getName());
 
         String beersHighlightedWithHtml = highlight(brewery);
-        Log.d("bind", beersHighlightedWithHtml);
+        //Log.d("bind", beersHighlightedWithHtml);
 
         text2.setText(Html.fromHtml(beersHighlightedWithHtml));
     }
@@ -48,7 +48,7 @@ public class BreweryItemView extends FrameLayout {
 
         List<String> highlightedBeers = new ArrayList<>();
         for (Beer beer : beers) {
-            Log.d("highlight", "beer -> " + beer.toString());
+            //Log.d("highlight", "beer -> " + beer.toString());
             if (beer.getLastDrunk() != null) {
                 highlightedBeers.add("<font color=\"#FF0000\">" + beer.getName() + "</font>");
             } else {
