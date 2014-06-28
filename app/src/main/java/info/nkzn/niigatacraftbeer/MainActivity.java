@@ -55,6 +55,7 @@ public class MainActivity extends FragmentActivity {
         }
 
         fragments.add(BreweryListFragment_.builder().build());
+        fragments.add(DrunkListFragment_.builder().build());
     }
 
     @AfterViews
