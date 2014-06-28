@@ -28,6 +28,8 @@ dependencies {
     androidTestCompile "junit:junit:${junitVersion}"
     androidTestCompile "org.robolectric:robolectric:${robolectricVersion}"
 
+    compile "org.twitter4j:twitter4j-core:${twitter4jVersion}"
+
     compile "org.androidannotations:androidannotations-api:${project.androidAnnotationsVersion}"
     apt "org.androidannotations:androidannotations:${project.androidAnnotationsVersion}"
 

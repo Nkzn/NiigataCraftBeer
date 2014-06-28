@@ -25,6 +25,7 @@ project.ext {
     jppVersion = '1.6.+';
     junitVersion = "4.11"
     robolectricVersion = "2.3+"
+    twitter4jVersion = '4.0.2+'
 }
 
 task wrapper(type: Wrapper) {
