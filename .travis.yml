@@ -1,22 +1,20 @@
-language: android
-jdk: oraclejdk7
-env:
-  matrix:
-    - ANDROID_TARGET=android-18  ANDROID_ABI=armeabi-v7a
+language: java
 
-android:
-  components:
-    - tools
-    - platform-tools
-    - build-tools-19.1.0
-    - android-19
-    - sysimg-19
-    - android-18
-    - sysimg-18
-    - extra-android-support
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
+before_install:
+  # Install base Android SDK
+  # see http://d.hatena.ne.jp/gfx/20131230/1388377416
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libstdc++6:i386 lib32z1
+  - export COMPONENTS=build-tools-19.1.0,android-18,extra
+  - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/master/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS
+  - source ~/.android-sdk-installer/env
+  - export TERM=dumb # to get clean gradle output
+
+script: ./gradlew clean test
+
+jdk:
+  - openjdk7
+  - oraclejdk7
 
 #before_script:
 #  # Create and start emulator
@@ -24,5 +22,5 @@ android:
 #  - emulator -avd test -no-skin -no-audio -no-window &
 #  - adb wait-for-device
 #  - adb shell input keyevent 82 &
-
-script: ./gradlew clean test
+#
+# script: ./gradlew clean test
