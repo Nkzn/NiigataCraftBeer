@@ -6,8 +6,9 @@ env:
 
 android:
   components:
-    - build-tools-19.1.0
+    - tools
     - platform-tools
+    - build-tools-19.1.0
     - android-19
     - sysimg-19
     - android-18
